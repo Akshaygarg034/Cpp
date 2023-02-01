@@ -21,7 +21,7 @@ public:
             return true;
         if (!r1 || !r2 || r1->val != r2->val)
             return false;
-        return sol(r1->left, r2->right) && sol(r1->right, r2->left);
+        return (r1->val == r2->val) && sol(r1->left, r2->right) && sol(r1->right, r2->left);
     }
     bool isSymmetric(TreeNode *root)
     {
