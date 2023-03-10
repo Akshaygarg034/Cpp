@@ -27,7 +27,7 @@ public:
     }
     int diameterOfBinaryTree(TreeNode *root)
     {
-        int x = func(root);
+        func(root);
         return maxi;
     }
 };
