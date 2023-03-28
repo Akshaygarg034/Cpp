@@ -38,8 +38,6 @@ public:
                 if(temp->right) q.push(temp->right);
                 q.pop();
             }
-
-            p->next = NULL;
         }
         return root;
     }
