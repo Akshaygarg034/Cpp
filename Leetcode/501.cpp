@@ -16,20 +16,18 @@ struct TreeNode
 
 class Solution {
 public:
-    void solve(TreeNode* root, map<int, int> &mp){
+    void solve(TreeNode* root, map<int, int> &mp, int &maxi){
         if(!root) return;
-        solve(root->left, mp);
+        solve(root->left, mp, maxi);
         mp[root->val]++;
-        solve(root->right, mp);
+        if(mp[root->val] > 1) maxi = max(maxi, mp[root->val]);
+        solve(root->right, mp, maxi);
     }
     vector<int> findMode(TreeNode* root) {
         map<int, int> mp;
         vector<int> v;
         int maxi = INT_MIN;
-        solve(root, mp);
-        for(auto it: mp){
-            if(it.second > 1) maxi = max(maxi, it.second);
-        }
+        solve(root, mp, maxi);
         if(maxi != INT_MIN){
             for(auto it: mp){
                 if(it.second == maxi) v.push_back(it.first);
