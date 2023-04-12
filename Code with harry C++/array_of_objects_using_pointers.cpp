@@ -2,7 +2,7 @@
 using namespace std;
 
 class shop
-{
+{ 
     int id;
     float price;
 
