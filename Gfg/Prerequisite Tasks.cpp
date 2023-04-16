@@ -7,7 +7,7 @@ class Solution
 public:
     bool isPossible(int N, vector<pair<int, int>> &p)
     {
-        vector<int> adj[N];
+        vector<int> adj[N]; 
         queue<int> q;
         vector<int> in(N, 0);
         for (int i = 0; i < p.size(); i++)
