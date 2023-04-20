@@ -6,7 +6,7 @@ struct TreeNode
 {
     int val;
     TreeNode *left;
-    TreeNode *right;
+    TreeNode *right; 
     TreeNode(int val)
     {
         val = val;
