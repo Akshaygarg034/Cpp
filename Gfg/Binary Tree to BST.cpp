@@ -6,7 +6,7 @@ struct Node
 {
     int data;
     Node *left;
-    Node *right;
+    Node *right; 
 };
 
 class Solution{
