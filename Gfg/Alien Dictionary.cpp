@@ -10,7 +10,7 @@ using namespace std;
 class Solution
 {
 public:
-    void dfs(int i, vector<int> adj[], vector<int> &vis, string &ans)
+    void dfs(int i, vector<int> adj[], vector<int> &vis, string &ans) 
     {
         vis[i] = 1;
         for (auto it : adj[i])
