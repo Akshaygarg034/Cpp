@@ -14,7 +14,7 @@ public:
     {
         vis[i] = 1;
         for (auto it : adj[i])
-        {
+        { 
             if (!vis[it])
             {
                 dfs(it, adj, vis, ans);
