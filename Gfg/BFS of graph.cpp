@@ -8,7 +8,7 @@ struct Node
     Node *left;
     Node *right;
     Node(int val)
-    {
+    { 
         data = val;
         left = NULL;
         right = NULL;
@@ -56,12 +56,6 @@ class Solution {
         return v;
     }
 };
-
-int main()
-{
-
-    return 0;
-}
 
 int main()
 {
