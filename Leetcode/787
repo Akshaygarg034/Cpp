@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<vector<pair<int, int>>> g(n);
+        vector<int> stops_array(n, INT_MAX);
+        for(auto it: flights){
+            g[it[0]].push_back({it[1], it[2]});
+        }
+        priority_queue<tuple<int, int , int>, vector<tuple<int, int, int>>, greater<tuple<int, int, int>>> pq;
+        pq.push(make_tuple(0, src, 0));
+        while(!pq.empty()){
+            auto [cost, node, stops] = pq.top();
+            pq.pop();
+
+            if(node == dst) return cost;
+            if(stops > k || stops > stops_array[node]) continue;
+            stops_array[node] = stops;
+            
+            for(auto it: g[node]){
+                auto [x, c] = it;
+                pq.push(make_tuple(cost + c, x, stops + 1));
+            }
+        }
+        return -1;
+    }
+};
