@@ -3,7 +3,7 @@
 using namespace std;
 
 class Solution
-{
+{ 
 public:
     bool dfs(vector<int> adj[], vector<int> &colorVector, int i, int &flag)
     {
