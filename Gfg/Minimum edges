@@ -1,0 +1,48 @@
+//User function Template for C++
+// For this we need to convert the graph to weighted form. the given directed edges are weighted as 0.
+// and the reverse edge, we make, we take their weight as 1.
+// Now we calculate shortest distance from src to dst using Djkstra's Algorithm.
+// if if normally we reach to destination, we got distance 0.
+// if we need to reverse edge to reach destination, we will add 1 distance for each.
+// In last we got no. of reverse edges as distance of dst node/
+class Solution{
+    public:
+        int minimumEdgeReversal(vector<vector<int>> &edges,int n,int src,int dst)
+        {
+            vector<vector<pair<int, int>>> adj(n+1);
+            
+            priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+            
+            vector<int> dis(n+1, 1e9);
+            dis[src] = 0;
+            
+            for(auto it: edges){
+                // Assigning 0 weight for direct edge and 1 weight for reverse edge
+                // 1-> {2, 0};
+                // 2-> {1, 1};
+                adj[it[0]].push_back({it[1], 0});
+                adj[it[1]].push_back({it[0], 1});
+            }
+            
+            pq.push({0, src});
+            
+            while(!pq.empty()){
+                
+                int weight = pq.top().first;
+                int node = pq.top().second;
+                pq.pop();
+                
+                for(auto it: adj[node]){
+                    // [element, weight]
+                    int node_1 = it.first;
+                    int weight_1 = it.second;
+                    
+                    if(weight + weight_1 < dis[node_1]){
+                        dis[node_1] = weight + weight_1;
+                        pq.push({dis[node_1], node_1});
+                    }
+                }
+            }
+            return dis[dst]== 1e9 ? -1: dis[dst];
+        }
+};
