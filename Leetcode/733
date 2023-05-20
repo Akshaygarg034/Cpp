@@ -1,0 +1,20 @@
+class Solution {
+public:
+    void solve(vector<vector<int>>& image, int old_col, int sr, int sc, int col, int m, int n, vector<vector<int>> &vis){
+        if(sr >= m || sc >= n || sr < 0 || sc < 0 || image[sr][sc] != old_col || vis[sr][sc] == 1) return;
+        vis[sr][sc] = 1;
+        image[sr][sc] = col;
+        solve(image, old_col, sr+1, sc, col, m, n, vis);
+        solve(image, old_col, sr, sc+1, col, m, n, vis);
+        solve(image, old_col, sr-1, sc, col, m, n, vis);
+        solve(image, old_col, sr, sc-1, col, m, n, vis);
+    }
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int col) {
+        int m = image.size();
+        int n = image[0].size();
+        vector<vector<int>> vis(m, vector<int>(n, 0));
+        int old_col = image[sr][sc];
+        solve(image, old_col, sr, sc, col, m, n, vis);
+        return image;
+    }
+};
