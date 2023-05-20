@@ -1,0 +1,20 @@
+class Solution
+{
+    public:
+        int numberOfTriangles(vector<vector<int>> &g,int n)
+        {
+            int count = 0;
+            for(int i=0; i<n; i++){
+                for(int j=0; j<n; j++){
+                    for(int k=0; k<n; k++){
+                        if(g[i][j] && g[j][k] && g[k][i] && i!=j && j!=k && k!=i){
+                            count++;
+                        }
+                    }
+                }
+            }
+            // For undirected graph, return count/6
+            // For directed graph, return count/3;
+            return count/3;
+        }
+};
