@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution
+class Solution 
 { 
 public:
     bool dfs(vector<int> adj[], vector<int> &colorVector, int i, int &flag)
