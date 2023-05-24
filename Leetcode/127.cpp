@@ -9,7 +9,7 @@ public:
     {
         unordered_set<string> words;
         queue<string> q;
-        for (auto it : wordList)
+        for (auto it : wordList) 
         {
             words.insert(it);
         }
