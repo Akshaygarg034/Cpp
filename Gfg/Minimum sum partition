@@ -1,0 +1,50 @@
+// For this, firstly we calculate a Total sum of all elements os arr. i.e sum.
+// Two partitions (S1 & S2)'s sum can range between {0 - sum}.
+// For every value of S1, there is (sum - S1) value for S2.
+// Our target output is; (S2 - S1) should be minimum. i.e (sum - S1 - S1) = (sum - 2*S1) should be minimum.
+// So for whole range between {0 - sum}, half sums are included in S1.
+// Also not every sum between {0-sum} is possible from elements of arr.
+// So we need to filter out possible sum values of S1 by making subset sum matrix of this arr elements.
+// Last row of matrix shows, whether it is possible to make sum (0, 1, 2,--) from subsets of all elementsof arr.
+// Store values of S1 in a vector
+// Calculate for individual value of s1, the vlaue of (sum - 2*S1) and give output as the minimum value among all.
+
+class Solution{
+
+  public:
+	int minDifference(int arr[], int n){
+	    int sum = 0;
+	    for(int i=0; i<n; i++){
+	        sum += arr[i];
+	    }
+	    int t[n+1][sum+1];
+	    
+	   // Initialization
+	   for(int j=0; j<sum+1; j++){
+	       t[0][j] = 0;
+	   }
+	   for(int i=0; i<n+1; i++){
+	       t[i][0] = 1;
+	   }
+	   
+	   //Choice diagram implementation
+	   for(int i=1; i<n+1; i++){
+	       for(int j=1; j<sum+1; j++){
+	           if(arr[i-1] <= j){
+	               t[i][j] = t[i-1][j-arr[i-1]] || t[i-1][j];
+	           }
+	           else t[i][j] = t[i-1][j];
+	       }
+	   }
+	   
+	   vector<int> v;
+	   for(int j=0; j<= (sum+1)/2; j++){
+	       if(t[n][j] == 1) v.push_back(j);
+	   }
+	   int minimum = INT_MAX;
+	   for(int i=0; i<v.size(); i++){
+	       minimum = min(minimum, abs(sum - 2*v[i]));
+	   }
+	   return minimum;
+	} 
+};
