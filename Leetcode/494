@@ -1,0 +1,51 @@
+// If we look at a particular case;
+// -1 + 1 + 1 - 1 = 0
+// Taking + elements one side and - elements on other;
+// +1 +1  -1 -1 = 0;
+// or +1 +1 - (1 + 1) = 0;
+// or S1 - S2 = d
+// Thus, it is similar to a problem of counting number of subsets whose difference = d.
+// (Partitions with Given Difference Problem)
+// number of such different subsets will give no. of ways to assign symbols to make sum = target
+
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int s = 0;
+        int n = nums.size();
+        for(int i=0; i<n; i++){
+            s += nums[i];
+        }
+        
+        // (target + s) should be even, because when we do (d + s)/2 in the next step, we got wrong answer.
+        // Example, (target + s) is 9, after dividing by 2, it becomes 4.5
+        // We will get correct answer only if we find subsets with sum 4.5
+        // but this code will find subsets with sum 4.
+        // As there is no possible subset whose sum could be 4.5, because all elements are of int datatype.
+        // Therefore we return 0 for such cases.
+        // ALso abs(target) should be less than s, only then we can get our result.
+        
+        if((target + s) % 2 != 0 || abs(target) > s) return 0;
+        int sum = (target + s)/2;
+        int t[n+1][sum+1];
+
+        // Initialization
+        for(int j=0; j<sum+1; j++){
+            t[0][j] = 0;
+        }
+        for(int i=0; i<n+1; i++){
+            t[i][0] = 1;
+        }
+
+        // Choice diagram implementation
+        for(int i=1; i<n+1; i++){
+            for(int j=0; j<sum+1; j++){
+                if(nums[i-1] <= j){
+                    t[i][j] = t[i-1][j-nums[i-1]] + t[i-1][j];
+                }
+                else t[i][j] = t[i-1][j];
+            }
+        }
+        return t[n][sum];
+    }
+};
