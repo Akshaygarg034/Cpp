@@ -1,0 +1,40 @@
+// Subproblem of longest common subsequence.
+// In this question, we need continuous longest common sub-sequence.
+
+class Solution{
+    public:
+    
+    int longestCommonSubstr (string s1, string s2, int m, int n)
+    {
+        int max = 0;
+        int t[m+1][n+1];
+        
+        // Initialization
+        for(int i=0; i<m+1; i++){
+            t[i][0] = 0;
+        }
+        for(int j=0; j<n+1; j++){
+            t[0][j] = 0;
+        }
+        
+        // Choice diagram implementation
+        for(int i=1; i<m+1; i++){
+            for(int j=1; j<n+1; j++){
+                // If the last character matches then do the same.
+                if(s1[i-1] == s2[j-1]){
+                    t[i][j] = 1 + t[i-1][j-1];
+                }
+                
+                // But if it doesn't matches, then this means sequence is no longer remains continuous.
+                // Now change value of t[i][j] to 0, so that next continuous sequence value starts from here.
+                else{
+                    t[i][j] = 0;
+                }
+                
+                // Storing the maximum value of continuous sequence, because max. value can be anywhere in the matrix.
+                if(t[i][j] > max) max = t[i][j];
+            }
+        }
+        return max;
+    }
+};
