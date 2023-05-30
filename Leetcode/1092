@@ -1,0 +1,66 @@
+// Firstly, fill the DP table using longest common substring method.
+// Traverse from back. i.e i = m, j = n, to get shortest common supersequence.
+
+class Solution {
+public:
+    string shortestCommonSupersequence(string s1, string s2) {
+        int m = s1.length();
+        int n = s2.length();
+        int t[m+1][n+1];
+
+        // Initialization
+        for(int i=0; i<m+1; i++){
+            t[i][0] = 0;
+        }
+        for(int j=0; j<n+1; j++){
+            t[0][j] = 0;
+        }
+
+        // Choice diagram implementation
+        for(int i=1; i<m+1; i++){
+            for(int j=1; j<n+1; j++){
+                if(s1[i-1] == s2[j-1]){
+                    t[i][j] = 1 + t[i-1][j-1];
+                }
+                else{
+                    t[i][j] = max(t[i][j-1], t[i-1][j]);
+                }
+            }
+        }
+
+        // After filling table
+        int i=m, j=n;
+        string s;
+
+        while(i > 0 && j > 0){
+            if(s1[i-1] == s2[j-1]){
+                s.push_back(s1[i-1]);
+                i--; j--;
+            }
+            else{
+                if(t[i-1][j] > t[i][j-1]){
+                    s.push_back(s1[i-1]);
+                    i--;
+                }
+                else{
+                    s.push_back(s2[j-1]);
+                    j--;
+                }
+            }
+        }
+
+        // After traversing, some starting characters can be left traversed due to condition i>0 && j>0.
+        while(i > 0){
+            s.push_back(s1[i-1]);
+            i--;
+        }
+        while(j > 0){
+            s.push_back(s2[j-1]);
+            j--;
+        }
+
+        // We will get the string in reverse order.
+        reverse(s.begin(), s.end());
+        return s;
+    }
+};
