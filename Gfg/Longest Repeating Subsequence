@@ -1,0 +1,34 @@
+// Sub-problem of longest common substring question.
+// In this quesiton, we have to print that subsequence, which is occuring twice in a string.
+// So if we find lcs using given string both as s1 and s2, we will get whole string as lcs.
+// So we need to add a condition. i.e i != j
+// The characters of the sub-sequence which are occuring twice, will be counted using this method.
+// Other characters are ignored due to that condition.
+
+class Solution {
+	public:
+		int LongestRepeatingSubsequence(string s){
+		    int m = s.length();
+		    int t[m+1][m+1];
+		    
+    		//  Initialization
+    		for(int i=0; i<m+1; i++){
+    		    t[i][0] = 0;
+    		    t[0][i] = 0;
+    		}
+    		
+            // Choice diagram implementation
+            for(int i=1; i<m+1; i++){
+                for(int j=1; j<m+1; j++){
+                    if(s[i-1] == s[j-1] && i != j){
+                        t[i][j] = 1 + t[i-1][j-1];
+                    }
+                    else{
+                        t[i][j] = max(t[i-1][j], t[i][j-1]);
+                    }
+                }
+            }
+            
+            return t[m][m];
+		}
+};
