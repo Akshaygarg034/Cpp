@@ -1,7 +1,7 @@
 //Sub-problem of longest common substring question.
 // But for that, we require two strings.
-// If we take given string as s1 and reverse of that string as s2, the lcs between these two will be our result.
-// Because palindromic sequence is same from reverse also.
+// As palindromic sequence is same from reverse also.
+// So, if we take given string as s1 and reverse of that string as s2, the lcs between these two will be our result.
 
 class Solution{
   public:
