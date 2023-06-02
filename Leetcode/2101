@@ -1,0 +1,46 @@
+// As we are finding that from a particular bomb, how many bombs can be reached and from there how many others can reach and so on, Therefore, this is graph pattern.
+// A bomb1 (x1, y1) is in range of bomb2 (x2, y2) iff, distance between these two <= radius of bomb1.
+// So make a graph by traversing all elements of array bomb and find, from a bomb, how many bombs can be reached and store all of them in a graph.
+// After that simply do dfs or bfs traversal to count maximum no. of bombs.
+
+class Solution {
+public:
+    void dfs(int i, vector<int> g[], vector<bool> &vis, int &cnt){
+        vis[i] = 1;
+        cnt++;
+        for(auto it: g[i]){
+            if(!vis[it]) dfs(it, g, vis, cnt);
+        }
+    }
+
+    int maximumDetonation(vector<vector<int>>& bombs) {
+        int n = bombs.size();
+        vector<int> g[n];
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                if(i != j){
+                    int x1 = bombs[i][0];
+                    int y1 = bombs[i][1];
+                    long r = bombs[i][2];
+
+                    int x2 = bombs[j][0];
+                    int y2 = bombs[j][1];
+
+                    long d1 = abs(x2 - x1);
+                    long d2 = abs(y2 - y1);
+                    if((d1 * d1) + (d2 * d2) <= r * r) g[i].push_back(j);
+                }
+            }
+        }
+
+        int ans = 0;
+
+        for(int i=0; i<n; i++){
+            vector<bool> vis(n, 0);
+            int cnt = 0;
+            if(!vis[i]) dfs(i, g, vis, cnt);           
+            ans = max(ans, cnt);
+        }
+        return ans;
+    }
+};
