@@ -1,0 +1,25 @@
+// Simply make a graph, and after that do DFS traversal of it.
+// Add time of each node and then return the maximum time during traversing from head to a employee (last node).
+// Note: it is not neccessary that the maximum height path gives maximum time.
+
+class Solution {
+public:
+    int res = 0;
+    void solve(int i, vector<int> g[], vector<int>& informTime, int ans){
+        for(auto it: g[i]){
+            solve(it, g, informTime, ans + informTime[it]);
+        }
+        if(ans > res){
+            res = ans;
+        }
+    }
+    int numOfMinutes(int n, int headID, vector<int>& manager, vector<int>& informTime) {
+        vector<int> g[n];
+        for(int i=0; i<n; i++){
+            if(manager[i] == -1) continue;
+            g[manager[i]].push_back(i);
+        }
+        solve(headID, g, informTime, informTime[headID]);
+        return res;
+    }
+};
