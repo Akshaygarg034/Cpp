@@ -1,0 +1,53 @@
+// Subproblem of matrix chain multiplication problem.
+// We have to find minimum number of partitions in a string to make every sub-string palindromic.
+
+class Solution{
+public:
+    int t[501][501];
+    bool isPalindrome(string &s, int i, int j){
+        while(i <= j){
+            if(s[i++] != s[j--]) return false;
+        }
+        return true;
+    }
+    
+    int solve(string &s, int i, int j){
+        // Base condition
+        if(i >= j) return 0;
+        if(isPalindrome(s, i, j)) return 0;
+        
+        if(t[i][j] != -1) return t[i][j];
+        int mini = INT_MAX;
+        
+        // K loop scheme
+        for(int k = i; k <= j-1; k++){
+            // To make this more optimized
+            int left = 0; int right = 0;
+            if(t[i][k] != -1){
+                left = t[i][k];
+            }
+            else{
+                t[i][k] = solve(s, i, k);
+                left = t[i][k];
+            }
+            
+            if(t[k+1][j] != -1){
+                right = t[k+1][j];
+            }
+            else{
+                t[k+1][j] = solve(s, k+1, j);
+                right = t[k+1][j];
+            }
+            
+            int temp_ans = left + right + 1;
+            mini = min(mini, temp_ans);
+        }
+        return t[i][j] = mini;
+    } 
+    
+    int palindromicPartition(string str)
+    {
+        memset(t, -1, sizeof(t));
+        return solve(str, 0, str.size()-1);
+    }
+};
