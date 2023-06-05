@@ -1,0 +1,83 @@
+// Sub-problem of matrix chain multiplication
+// For any problem to evaluate to true, its subproblem may return true or false depending upon the operators
+// e.g For XOR operation of problem (A|B)^(C&D), it will evaluate to true only if one return true, other false.
+// So we need to count no. of ways in which problem evaluate to false also.
+// For this we take (isTrue) variable which tells us that we want the problem to return no. of ways of true or false.
+// For memoization of this, we can use 3D matrix t[201][201][2] as well as map<string, int>.
+
+class Solution{
+public:
+    unordered_map<string, int> mp;
+    int mod = 1003;
+    int solve(string &s, int i, int j, bool isTrue){
+        // Base condition
+        if(i > j) return 0;
+        if(i == j){
+            if(s[i] == 'T'){
+                if(isTrue == true) return 1;
+                else return 0;
+            }
+            else{
+                if(isTrue == false) return 1;
+                else return 0;
+            }
+        }
+        
+        string temp;
+        temp.append(to_string(i));
+        temp.push_back(' ');
+        temp.append(to_string(j));
+        temp.push_back(' ');
+        temp.append(to_string(isTrue));
+        
+        // Checking value in map
+        if(mp.find(temp) != mp.end()) return mp[temp];
+        
+        // K loop scheme
+        int ans = 0;
+        for(int k = i+1; k <= j-1; k += 2){
+            // No. of ways in which left subproblem return true and false are lt and rt respectively.
+            int lt = solve(s, i, k-1, true);
+            int lf = solve(s, i, k-1, false);
+            
+            // No. of ways in which right subproblem return true and false are rt and rf respectively.
+            int rt = solve(s, k+1, j, true);
+            int rf = solve(s, k+1, j, false);
+            
+            // Depending upon operator, ans will contain different values.
+            if(s[k] == '&'){
+                if(isTrue == true){
+                    ans += lt * rt;
+                }
+                else{
+                    ans += lf * rf + lf * rt + lt * rf;
+                }
+            }
+            
+            else if(s[k] == '|'){
+                if(isTrue == false){
+                    ans += lf * rf;
+                }
+                else{
+                    ans += lt * rf + lf * rt + lt * rt;
+                }
+            }
+            
+            else if(s[k] == '^'){
+                if(isTrue == true){
+                    ans += lf * rt + lt * rf;
+                }
+                else{
+                    ans += lf * rf + lt * rt;
+                }
+            }
+        }
+        
+        return mp[temp] = ans % mod;
+    }
+    
+    int countWays(int N, string s){
+        mp.clear();
+        return solve(s, 0, N-1, true);
+    }
+};
