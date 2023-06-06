@@ -1,0 +1,47 @@
+//Sub-Problem of matrix chain multiplication
+// We need to partition at each character
+// At each partition, there is only two possibilities. i.e swap is done or no swap is done.
+// If from any possibility, we get true ans, return true.
+
+class Solution{
+    public:
+    unordered_map<string, bool> mp;
+    
+    bool solve(string s1, string s2){
+        int n = s1.size();
+        
+        // Base condition
+        if(s1 == s2) return true;
+        
+        if(n <= 1) return false;
+        // i.e s1 = "a", s2 = "b"
+        
+        string temp = s1;
+        temp.push_back(' ');
+        temp.append(s2);
+        
+        if(mp.find(temp) != mp.end()) return mp[temp];
+        
+        int flag = false;
+        for(int k=1; k < n; k++){
+            // At any level of non-leaf nodes, there is only two possibilities.
+            
+            // No swap (For co|der and oc|der ; solve(co, oc) && solve(der, der))
+            bool cond1 = solve(s1.substr(0, k), s2.substr(0, k)) && solve(s1.substr(k, n-k), s2.substr(k, n-k));
+            // Swap (For co|der and der|oc ; solve(co, oc) && solve(der, der))
+            bool cond2 = solve(s1.substr(0, k), s2.substr(n-k, k)) && solve(s1.substr(k, n-k), s2.substr(0, n-k));
+            
+            if(cond1 || cond2){
+                flag = true;
+                break;
+            }
+        }
+        return mp[temp] = flag;
+    }
+    
+    bool isScramble(string s1, string s2){
+        mp.clear();
+        if(s1.size() == 0) return true;
+        return solve(s1, s2);
+    }    
+};
