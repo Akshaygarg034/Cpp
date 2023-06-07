@@ -1,0 +1,30 @@
+// If we start from last bit of c, that bit can be 0 or 1.
+// If last bit of c is 1, then last bit of a || last bit of b should be 1. If not, we need 1 flip to make this 1.
+// If last bit of c is 0, then last bit of a || last bit of b should be 0. If not, we need 1 to convert last bit 1 of a and b to 0.
+// Loop will continue for the largest value among a, b and c to check for each bit of all three.
+
+class Solution {
+public:
+    int minFlips(int a, int b, int c) {
+        int cnt = 0;
+        int maxi = max(max(a, b), c);
+        while(maxi){
+            if(c&1){
+                if(((a&1) || (b&1)) != 1){
+                    cnt++;
+                }
+            }
+            else{
+                if(((a&1) || (b&1)) != 0){
+                    if(a&1) cnt++;
+                    if(b&1) cnt++;
+                }
+            }
+            c = c>>1;
+            a = a>>1;
+            b = b>>1;
+            maxi = maxi>>1;
+        }
+        return cnt;
+    }
+};
