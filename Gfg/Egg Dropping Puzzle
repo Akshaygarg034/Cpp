@@ -1,0 +1,65 @@
+// As in each floor, we need to check, by dropping the egg, what are the minimum no. of moves.
+// So it is sub-Problem of matrix chain multiplication.
+// So starting from 1st floor, we need to go at each floor and check for ans.
+// At each floor, there is two possibilities, egg breaks or not breaks.
+// If egg breaks, we need to check at lower floors to find threshold floor.
+// If egg doesn't breaks we need to check for upper floors to find threshold floor.
+// We need to find minimum number of moves in the worst case.
+// So whether egg breaks or not, in these two possibilities, one may lead to worst case.
+// So from k = 1 to f, minimum value among all these worst cases gives our answer.
+
+class Solution
+{
+    public:
+    int t[201][201];
+    
+    int solve(int e, int f){
+        // Base condition
+        if(f == 0 || f == 1){
+            return f;
+        }
+        if(e == 1){
+            return f;
+        }
+        
+        if(t[e][f] != -1) return t[e][f];
+        
+        int mini = INT_MAX;
+        
+        // k loop
+        for(int k=1; k <= f; k++){
+            // For more optimization
+                int Break = 0;
+                int noBreak = 0;
+                
+                // Break
+                if(t[e-1][k-1] != -1){
+                    Break = t[e-1][k-1];
+                }
+                else{
+                    t[e-1][k-1] = solve(e-1, k-1);
+                    Break = t[e-1][k-1];
+                }
+                
+                // noBreak
+                if(t[e][f-k] != -1){
+                    noBreak = t[e][f-k];
+                }
+                else{
+                    t[e][f-k] = solve(e, f-k);
+                    noBreak = t[e][f-k];
+                }
+            // max is used here for worst case
+            int temp_ans = 1 + max( Break , noBreak );
+            mini = min(mini, temp_ans);
+        }
+        
+        return t[e][f] = mini;
+    }
+    
+    int eggDrop(int N, int K) 
+    {
+        memset(t, -1, sizeof(t));
+        return solve(N, K);
+    }
+};
