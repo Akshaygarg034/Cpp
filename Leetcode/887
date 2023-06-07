@@ -1,0 +1,54 @@
+// As in each floor, we need to check, by dropping the egg, what are the minimum no. of moves.
+// So it is sub-Problem of matrix chain multiplication.
+// So starting from 1st floor, we need to go at each floor and check for ans.
+// At each floor, there is two possibilities, egg breaks or not breaks.
+// If egg breaks, we need to check at lower floors to find threshold floor.
+// If egg doesn't breaks we need to check for upper floors to find threshold floor.
+// We need to find minimum number of moves in the worst case.
+// So whether egg breaks or not, in these two possibilities, one may lead to worst case.
+// So from k = 1 to f, minimum value among all these worst cases gives our answer.
+
+class Solution {
+public:
+    int t[101][10001];
+    
+    int solve(int e, int f){
+        // Base condition
+        if(f == 0 || f == 1){
+            return f;
+        }
+        if(e == 1){
+            return f;
+        }
+        
+        if(t[e][f] != -1) return t[e][f];
+        
+        int mini = INT_MAX;
+        
+        // Using binary search here instead of linear k loop to prevent TLE
+        int l = 1; int h = f;
+        while(l <= h){
+            int mid = (l+h)/2;
+
+                // Break (downward)
+                int Break = solve(e-1, mid-1);
+                
+                // noBreak (upward)
+                int noBreak = solve(e, f-mid);
+                
+            // max is used here for worst case
+            int temp_ans = 1 + max( Break , noBreak );
+            mini = min(mini, temp_ans);
+
+            if(Break <  noBreak) l = mid+1;
+            else h = mid - 1;;
+        }
+        
+        return t[e][f] = mini;
+    }
+
+    int superEggDrop(int k, int n) {
+        memset(t, -1, sizeof(t));
+        return solve(k, n);
+    }
+};
