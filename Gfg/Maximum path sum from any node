@@ -1,0 +1,40 @@
+// At any node, we need to update the res variable & return something (max sum from sub-trees).
+
+// For returning maximum sum, there are two possibilities:
+//                                                                          |
+    // 1: return max(l, r) + node->val.                               e.g.  10
+    //          (whether 2 or 3 are +ve or -ve doesn't matter)             /  \
+    //                                                                    2    3
+
+    // 2: return only node->val, if both 2 and 3 are both -ve.
+
+// For Updating the res variable with max sum, there are three possibilities of getting max sum:
+    // 1: update res with l + r + node->val.
+    // The above two are remaining two possibilities.
+    
+class Solution {
+  public:
+    int res = INT_MIN;
+
+    int solve(Node* root){
+        if(!root) return 0;
+
+        int l = solve(root->left);
+        int r = solve(root->right);
+
+        // For returning
+        int temp = max(max(l, r) + root->data, root->data);
+
+        // For Updating res variable
+        int ans = max(temp, l + r + root->data);
+        res = max(res, ans);
+
+        return temp;
+    }
+    
+    int findMaxSum(Node* root)
+    {
+        solve(root);
+        return res;
+    }
+};
