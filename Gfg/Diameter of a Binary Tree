@@ -1,0 +1,23 @@
+class Solution {
+  public:
+    int maxi= INT_MIN;
+    
+    int func(Node* root){
+        // Base condition
+        if(!root) return 0;
+        
+        int x = func(root->left);
+        int y = func(root->right);
+        
+        // Updating maxi for each node to store maximum value of diameter.
+        maxi = max(maxi, (x+y+1));
+        
+        // returning height of the subtree.
+        return (max(x,y) + 1);
+    }
+    
+    int diameter(Node* root) {
+        func(root);
+        return maxi;
+    }
+};
