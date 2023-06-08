@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int res = INT_MIN;
+    
+    int solve(Node* root){
+        if(!root) return 0;
+        
+        // As we have to find max sum between two nodes, so we make sure that in leaf node cases, res should not be updated.
+        if(!root->left && !root->right) return root->data;
+        
+        int l = solve(root->left);
+        int r = solve(root->right);
+        
+        // As we have to find max sum between two nodes, so we make sure that in such cases, res should also not be updated.
+        if(!root->left) return r + root->data;
+        if(!root->right) return l + root->data;
+        
+        // For returning
+        int temp = max(l, r) + root->data;
+        
+        // For updating res
+        res = max(res, l + r + root->data);
+        
+        return temp;
+    }
+    
+    int maxPathSum(Node* root)
+    {
+        int x = solve(root);
+        
+        // As for below cases, we already write conditions. But for root node of such case, it is also considered as special node.
+        // So as res has not been updated due to that condition, (function simply has returned that value), So we do this.
+        if(!root->left || !root->right) return max(x, res);
+        
+        return res;
+    }
+};
