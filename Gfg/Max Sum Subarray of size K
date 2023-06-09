@@ -1,0 +1,27 @@
+class Solution{   
+public:
+    long maximumSumSubarray(int k, vector<int> &arr , int N){
+        // Beginning and Ending of window
+        int i=0; int j=0;
+        
+        long sum = 0;
+        long maxi = INT_MIN;
+        
+        while(j < N){
+            sum += arr[j];
+            
+            // Making window of size k
+            if(j - i + 1 < k){
+                j++;
+            }
+            
+            // Moving window after it has been formed
+            else if(j - i + 1 == k){
+                maxi = max(maxi, sum);
+                sum = sum - arr[i];
+                i++; j++;
+            }
+        }
+        return maxi;
+    }
+};
