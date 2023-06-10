@@ -1,0 +1,67 @@
+// For any element in the arr, its neighbour values can be el, el+1, el-1.
+// To get maximum value of arr[index], its neighbour values should be less (el-1);
+    // e.g if we take arr[index] = 9, its next elements will be: 8, 7, 6, ---1, 1, 1.  (case 1)
+    // They can also be like 8, 7, 6, ----, 1.  (case 2)
+    // or like 8, 7, 6, 5.  (case 3)
+// These 3 cases are possible as per size of arr.
+// if first element aftyer index is el, then:
+    // if no. of elements on right is less than el, tehn it is case 3.
+    // if equal, case 2.
+    // if greater, case 1.
+// Similar for left side neighbour elements.
+
+// So start arr[index] from maxSum to 1
+// We have to do binary search.
+// For each sum value, if sum of entire arr is less than or greater than max sum and do binary search accordingly.
+// Store the max value of sum when arr sum is <= maxSum and return as res.
+
+class Solution {
+public:
+    int maxValue(int n, int index, int maxSum) {
+        int l = 1, h = 1000000000;
+
+        // No. of elements on left side and right side of index
+        int left = index;
+        int right = n - index - 1;
+
+        int res = 0;
+
+        while(l <= h){
+            int mid = l + (h-l)/2;
+
+            // First element after or before index
+            long long el = mid - 1;
+
+            long long left_sum = 0, right_sum = 0, sum = 0;
+
+            // For right sum
+            if(right < el){
+                right_sum = el*(el+1)/2 - (el-right)*(el-right+1)/2;
+            }
+            else{
+                right_sum = (el * (el+1)/2) + (right - el);
+            }
+
+            // For left sum
+            if(left < el){
+                left_sum = (el * (el+1)/2) - ((el-left) * ((el-left) +1)/2);
+            }
+            else{
+                left_sum = (el * (el+1)/2) + (left - el);
+            }
+
+            // Total sum of arr
+            sum = left_sum + right_sum + mid;
+
+            if(sum <= maxSum){
+                res = mid;
+                l = mid + 1;
+            }
+
+            else{
+                h = mid - 1;
+            }
+        }
+        return res;
+    }
+};
