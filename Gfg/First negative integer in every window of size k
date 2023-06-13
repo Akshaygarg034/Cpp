@@ -1,0 +1,28 @@
+vector<long long> printFirstNegativeInteger(long long int arr[], long long int N, long long int k) {
+    vector<long long> res;
+    vector<long long> temp;
+    
+    // Before window making
+    for(int i=0; i<k-1; i++){
+        if(arr[i] < 0) temp.push_back(arr[i]);
+    }
+    
+    // After window of size k has been made
+    for(int i=k-1; i< N; i++){
+        if(arr[i] < 0) temp.push_back(arr[i]);
+        
+        if(temp.size() == 0) {
+            res.push_back(0);
+        }
+        
+        else{
+            // Storing 1st -ve element of the window in res vector
+            res.push_back(temp.front());
+            
+            // Removing information of starting element of the window because window needs to be moved.
+            if(arr[i-k+1] == temp.front()) temp.erase(temp.begin());
+        }
+    }
+    
+    return res;                                        
+ }
