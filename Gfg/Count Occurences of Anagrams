@@ -1,0 +1,48 @@
+// This is sliding window question as for window of size p.size() in s, we are checking,
+// if the window elements are anagram of p or not.
+
+class Solution{
+public:
+	int search(string pat, string txt) {
+	    int k = pat.size();
+        int ans = 0;
+        unordered_map<char, int> mp;
+
+        for(int i=0; i < k; i++){
+            mp[pat[i]]++;
+        }
+
+        int count = mp.size();
+
+        int i=0, j=0;
+
+        while(j < txt.size()){
+            if(mp.find(txt[j]) != mp.end()){
+                mp[txt[j]]--;
+
+                if(mp[txt[j]] == 0) count--;
+            }
+            
+            // Before window making
+            if( j - i + 1 < k) j++;
+
+            // After window making
+            else{
+                // Updating ans variable
+                if(count == 0) ans++;
+
+                // Removing information of starting element of the window
+                if(mp.find(txt[i]) != mp.end()){
+                    mp[txt[i]]++;
+
+                    if(mp[txt[i]] == 1) count++;
+                }
+                
+                i++; j++;
+            }
+
+        }
+        return ans;
+	}
+
+};
