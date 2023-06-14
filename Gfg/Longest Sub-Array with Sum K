@@ -47,6 +47,8 @@ class Solution{
         
         // map<sum, index>
         unordered_map<int,int>mp;
+        
+        // In order to deal with sum = k cases
         mp[0] = -1;
         
         for(int i=0;i<N;i++){
