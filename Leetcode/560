@@ -1,0 +1,26 @@
+// Prefix Sum Question
+
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        int n = nums.size();
+        unordered_map<int, int> mp;
+        mp[0] = 1;
+        int sum = 0, ans = 0;
+        
+
+        for(int i=0; i<n; i++){
+            // Adding sum of each element
+            sum += nums[i];
+
+            // Firstly finding how much our sum is greater than k, say 2, then removing number of previously appeared 2 sum subarrays gives number of subarrays with required sum
+            // So adding their count in ans
+            ans += mp[sum - k];
+
+            // Updating sum in map to get its count
+            mp[sum]++;
+        }
+
+        return ans;
+    }
+};
