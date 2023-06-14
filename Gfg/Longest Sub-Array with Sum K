@@ -1,0 +1,72 @@
+// Sliding Window Approach
+// This will not work because -ve elements are also present, so we are uncertain about the sum, that it will increase or decrease on moving the window.
+
+// class Solution{
+//     public:
+//     int lenOfLongSubarr(int A[],  int n, int k) 
+//     { 
+//         int sum = 0;
+//         int ans = INT_MIN;
+
+//         int i=0, j=0;
+//         while(j < n){
+//             sum += A[j];
+
+//             if(sum < k) j++;
+
+
+//             else if(sum > k){
+//                 while(sum > k){
+//                     if(A[i] < 0) sum += A[i];
+//                     else sum -= A[i];
+//                     i++;
+//                 }
+//                 j++;
+//             }
+
+//             if(sum == k){
+//                 ans = max(ans, j - i + 1);
+//                 j++;
+//             }
+//         }
+        
+//         return ans;
+//     } 
+
+// };
+
+
+// Prefix Sum Approach
+
+class Solution{
+    public:
+    int lenOfLongSubarr(int A[],  int N, int K) 
+    { 
+        int sum = 0;
+        int length = 0;
+        
+        // map<sum, index>
+        unordered_map<int,int>mp;
+        mp[0] = -1;
+        
+        for(int i=0;i<N;i++){
+            sum+=A[i];
+            
+            // Firstly finding how much our sum is greater than k, say 2, then removing number of previously appeared 2 sum subarrays gives number of subarrays with required sum
+            // So subtracting i with that sum index gives possible answer.
+            // If (sum -k) sum doesn't present, mp gives its index as 1, then we might get wrong results, so we update our answer only if that sum present.
+            if(mp.find(sum-K)!=mp.end()){
+                length=max(length,i-mp[sum-K]);
+            }
+            
+            // Adding sum with its index.
+            // Only first time index is stored, because we require maximum length.
+            if(mp.find(sum)==mp.end()){
+                mp[sum]=i;
+            }
+        }
+        
+        return length;
+    } 
+
+};
