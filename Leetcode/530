@@ -1,0 +1,23 @@
+// If the elements are written in increasing order, then minimum difference can be found at the consecutive elements.
+// e.g. 1, 2, 3, 5, 7   here min diff can be found between 1 & 2, 2 & 3, 3 & 5 ----.
+// Inorder Traversal of BST gives increasing order of elements of the tree.
+// Simply perform inorder traversal and each time update ans variable with difference of root element with previous element.
+
+class Solution {
+public:
+    int ans  = INT_MAX;
+    int val = -1;
+    int getMinimumDifference(TreeNode* root) {
+        // Left
+        if(root->left) getMinimumDifference(root->left);
+
+        // Calculation part
+        if(val >= 0) ans = min(ans, root->val - val);
+        val = root->val;
+
+        // Right
+        if(root->right) getMinimumDifference(root->right);
+
+        return ans;
+    }
+};
