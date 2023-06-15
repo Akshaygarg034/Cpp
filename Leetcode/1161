@@ -1,0 +1,31 @@
+//  Simply do bfs level wise, and at each level, if sum is greater than maxi, then store the level.
+
+class Solution {
+public:
+    int maxLevelSum(TreeNode* root) {
+        int maxi = INT_MIN;
+        int ans = 0;
+        queue<TreeNode*> q;
+        q.push(root);
+        int cnt = 0;
+
+        while(!q.empty()){
+            cnt++;
+            int sz = q.size();
+            int sum = 0;
+
+            while(sz--){
+                TreeNode* elem = q.front();
+                q.pop();
+                sum += elem->val;
+                if(elem->left) q.push(elem->left);
+                if(elem->right) q.push(elem->right);
+            }
+            if(sum > maxi){
+                maxi = max(maxi, sum);
+                ans = cnt;
+            }
+        }
+        return ans;
+    }
+};
