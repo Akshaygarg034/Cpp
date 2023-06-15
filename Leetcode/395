@@ -1,0 +1,32 @@
+// Firstly store all elements in map to get count of each element.
+// Start traversing the array from beginning, and check if a element comes, whose count < k, then it will definitely not an answer.
+    // e.g if k = 2, mp[a] = 2, mp[b] = 2, mp[c] = 1;
+    // Let string, a a c b b
+    // Here, when a element such as c appear, this means our answer lies either left side of c or right side.
+
+class Solution {
+public:
+    int longestSubstring(string s, int k) {
+        int n = s.size();
+
+        if(k > n) return 0;
+        if(k == 1) return n;
+
+        unordered_map<char, int> mp;
+
+        for(auto it: s){
+            mp[it]++;
+        }
+
+        int i=0, j=0;
+
+        while(j < n && mp[s[j]] >= k) j++;
+
+        if(j >= n-1) return j;
+
+        int l = longestSubstring(s.substr(0, j), k);
+        int r = longestSubstring(s.substr(j+1), k);
+
+        return max(l, r);
+    }
+};
