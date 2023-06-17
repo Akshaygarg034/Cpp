@@ -1,0 +1,79 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+
+// Using map
+// This approach gives TLE due to extra while loop inside
+
+// class Solution{
+//     public:
+//     int longestUniqueSubsttr(string s){
+//         int n = s.size();
+//         unordered_map<char, int> mp;
+//         int maxi = INT_MIN;
+        
+//         int i=0, j=0;
+//         while(j < n){
+//             mp[s[j]]++;
+            
+//             if(mp.size() == j-i+1){
+//                 maxi = max(maxi, j-i+1);
+//                 j++;
+//             }
+            
+//             else if(mp.size() < j-i+1){
+//                 mp.clear();
+//                 mp[s[j]]++;
+//                 i = j;
+//                 j++;
+//             }
+
+//         }
+//         return maxi;
+//     }
+// };
+
+// Rather than storing count, we will now store index of element.
+// So that we dont't need any extra while loop upto that repeating element.
+// We simply jump the code to the repeating element's index
+
+class Solution{
+    public:
+    int longestUniqueSubsttr(string s){
+        int n = s.size();
+        vector<int> v(26, -1);
+        int maxi = 0;
+        int start = -1;
+        
+        for(int i=0; i<n; i++){
+            
+            if(v[s[i] - 'a'] > start){
+               start = v[s[i] - 'a']; 
+            } 
+            
+            // if element's value is <= start then they are allowed, so put index and update maxi
+            v[s[i] - 'a'] = i;
+            maxi = max(maxi, i - start);
+        }
+        
+        return maxi;
+    }
+};
+
+
+//{ Driver Code Starts.
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		string str;
+		cin>>str;
+		Solution ob;
+		cout<<ob.longestUniqueSubsttr(str)<<endl;
+	}
+	return 0;
+}
