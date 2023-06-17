@@ -1,0 +1,59 @@
+// Variable size sliding window problem.
+// Traversing through the string s and decrementing map values.
+// when map size becomes 0, this means all required values of t are in our window.
+// Now to get minimum value of this window start reducing the size of window from beginning.
+// Till map size becomes greater than 0
+// When map size becomes greater than 0, update minimum length and starting pointer of window.
+// Repeat
+// In last, we will get minimum length and starting pointer of that substring.with which we will get Answer.
+
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        if(s.size() < t.size()) return "";
+        
+        int n = s.size();
+        unordered_map<char, int> mp;
+        int mini = INT_MAX;
+        int start = 0;
+
+        // Storing all elements of t in map
+        for(auto it: t){
+            mp[it]++;
+        }
+
+        // Making count variable for map size in order to prevent map traversals.
+        int count = mp.size();
+
+        int i=0, j=0;
+
+        while(j < n){
+            if(mp.find(s[j]) != mp.end()){
+                mp[s[j]]--;
+                if(mp[s[j]] == 0) count--;
+            }
+
+            while(count == 0){
+                if(mp.find(s[i]) != mp.end()){
+                    mp[s[i]]++;
+
+                    if(mp[s[i]] == 1){
+                        count++;
+
+                        if(j-i+1 < mini){
+                            mini = j-i+1;
+                            start = i;
+                        }
+                    }
+                }
+                i++;
+            }
+
+            j++;
+        }
+
+        if(mini == INT_MAX) return "";
+
+        return s.substr(start, mini);
+    }
+};
