@@ -1,0 +1,60 @@
+// Variable size sliding window problem.
+// Traversing through the string s and decrementing map values.
+// when map size becomes 0, this means all required values of t are in our window.
+// Now to get minimum value of this window start reducing the size of window from beginning.
+// Till map size becomes greater than 0
+// When map size becomes greater than 0, update minimum length and starting pointer of window.
+// Repeat
+// In last, we will get minimum length and starting pointer of that substring.with which we will get Answer.
+
+
+// Map method will gives TLE, So we should use vector.
+
+class Solution
+{
+    public:
+    string smallestWindow (string s, string t)
+    {
+        if(s.size() < t.size()) return "-1";
+        
+        int n = s.size();
+        vector<int> mp(256, 0);
+        
+        int mini = INT_MAX;
+        int start = 0;
+        
+        int count = 0;
+
+        // Storing all elements of t in map
+        for(auto it: t){
+            mp[it]++;
+            if(mp[it] == 1)count++;
+        }
+
+        int i=0, j=0;
+
+        while(j < n){
+            mp[s[j]]--;
+            if(mp[s[j]] == 0) count--;
+
+            while(count == 0){
+                if(j-i+1 < mini){
+                    mini = j-i+1;
+                    start = i;
+                }
+                
+                mp[s[i]]++;
+
+                if(mp[s[i]] == 1) count++;
+                
+                i++;
+            }
+
+            j++;
+        }
+
+        if(mini == INT_MAX) return "-1";
+
+        return s.substr(start, mini);
+    }
+};
