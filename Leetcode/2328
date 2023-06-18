@@ -1,0 +1,53 @@
+// For each element, make a dfs upto last element and increase count at each step.
+// In start count should be 1.
+// Store counts of all elements and return as answer.
+// But for this time complexity will be m*n * m*n which need to be optimized.
+// So for this, Use DP to store all intermediate results.
+// These intermediate results are stored during backtracking.
+
+class Solution {
+public:
+    int mod = 1e9 + 7;
+    int dx[4] = {0, 0, 1, -1}, dy[4] = {1, -1, 0, 0};
+
+    bool isValid(int i, int j, vector<vector<int>>& grid){
+        int m = grid.size();
+        int n = grid[0].size();
+
+        if(i >= m || j >= n || i < 0 || j < 0) return false;
+        return true;
+    }
+
+    int dfs(int x, int y, vector<vector<int>>& grid,vector<vector<int>> &dp){
+        if(dp[x][y] != -1) return dp[x][y];
+        
+        int ans = 1;
+
+        for(int i=0; i<4; i++){
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+
+            if(isValid(nx, ny, grid) && grid[x][y] < grid[nx][ny]){
+                ans += dfs(nx, ny, grid, dp)  % mod;
+            }
+        }
+
+        return dp[x][y] = ans % mod;
+    }
+
+    int countPaths(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+
+        long long count = 0;
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                count += dfs(i, j, grid, dp) % mod;
+            }
+        }
+
+        return count % mod;
+    }
+};
