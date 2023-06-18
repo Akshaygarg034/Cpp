@@ -1,0 +1,40 @@
+// For any element we have two options: either we replace it with arr2 element or not.
+// For this we have to store its prev element because if we need to replace element, we will replace it with element just greater than its prev element.
+
+class Solution {
+public:
+    int solve(int i, int prev, map<pair<int, int>, int> &mp, vector<int>& arr1, vector<int>& arr2){
+        // Base case
+        if(i == arr1.size()) return 0;
+
+        if(mp.find({i, prev}) != mp.end()) return mp[{i, prev}];
+
+        int ans = INT_MAX/2;
+
+        // Finding just greater element than prev in arr2
+        int idx = upper_bound(arr2.begin(), arr2.end(), prev) - arr2.begin();
+
+        // If we don't replace arr1[i]
+        if(arr1[i] > prev) ans = min(ans, solve(i+1, arr1[i], mp, arr1, arr2));
+
+        // If we replace arr1[i], then add 1 operation
+        if(idx < arr2.size()) ans = min(ans, solve(i+1, arr2[idx], mp, arr1, arr2) + 1);
+
+        return mp[{i, prev}] = ans;
+    }
+
+    int makeArrayIncreasing(vector<int>& arr1, vector<int>& arr2) {
+        // For binary search in arr2.
+        sort(arr2.begin(), arr2.end());
+
+        // Using DP for optimization of tree structure.
+        map<pair<int, int>, int> mp;
+
+        int res = solve(0, INT_MIN, mp, arr1, arr2);
+
+        // If we don't get any ans
+        if(res == INT_MAX/2) return -1;
+
+        return res;
+    }
+};
