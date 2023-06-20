@@ -1,26 +1,25 @@
-#include <iostream>
-#include <bits/stdc++.h>
-using namespace std;
+// We have to check for each profit and return maximum among them.
+// So we simply traverse array, updating profit each time and updating minimum value also, because we got maximum profit with minimum value.
 
-class Solution
-{
+// We cannot do like finding miniumum value and after that finding maximum value and return maxi - mini.
+// Because it is possible that mini element lies at the end of array and we will not get any maxi after that.
+// Then we will return profit 0, but there are other profits also, before the minimum value. Ans should be that not 0.
+// So we have to calculate each profit and return maximum among them.
+
+class Solution {
 public:
-    int maxProfit(vector<int> &p)
-    {
-        int min = INT_MAX;
+    int maxProfit(vector<int>& prices) {
+        int mini = prices[0];
         int profit = 0;
-        for (int i = 0; i < p.size(); i++)
-        {
-            if (p[i] < min)
-                min = p[i];
-            if ((p[i] - min) > profit)
-                profit = p[i] - min;
+
+        for(int i = 1; i < prices.size(); i++){
+
+            profit = max(profit, prices[i] - mini);
+
+            mini = min(mini, prices[i]);
+
         }
+
         return profit;
     }
 };
-
-int main()
-{
-    return 0;
-}
