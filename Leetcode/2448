@@ -1,0 +1,49 @@
+// Consider if cost of each element is 1, then we can change each element towards left right or any element.
+// But We will get minimum cost if we change each element towards median.
+// Here cost of each element is different.
+// So we can visualize this scenario in different way.
+// Cost of 2 is 5 or 2 is written 5 times each of cost 1 is same.
+// So simply find median and then change each element towards median will give you minimum cost.
+
+class Solution {
+public:
+    int findMedian(vector<int>& nums, vector<int>& cost){
+        vector<pair<int, int>> v;
+
+        // We are taking total count of element in order to find median as totalCount / 2
+        long long totalCount = 0;
+
+        for(int i=0; i<nums.size(); i++){
+            totalCount += cost[i];
+            v.push_back({nums[i], cost[i]});
+        }
+
+        // Sorting is must to find median
+        sort(v.begin(), v.end());
+
+        long long count = 0;
+        int i=0;
+        int median = 0;
+
+        while(count < (totalCount + 1)/2 && i<v.size()){
+            count += v[i].second;
+            median = v[i].first;
+            i++;
+        }
+
+        return median;
+    }
+
+    long long minCost(vector<int>& nums, vector<int>& cost) {
+        int median = findMedian(nums, cost);
+        long long res = 0;
+
+        // Changing each element towards median
+        for(int i=0; i<nums.size(); i++){
+            long long diff = abs(nums[i] - median);
+            res += diff * cost[i];
+        }
+
+        return res;
+    }
+};
