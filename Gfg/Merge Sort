@@ -1,3 +1,61 @@
+// Recursive code
+
+// class Solution
+// {
+//     public:
+//     void merge(int arr[], int l, int mid, int h)
+//     {
+//          int i = l, j = mid + 1;
+//          int k = 0;
+         
+//          int temp[h - l + 1];
+         
+//          while(i <= mid && j <= h){
+//              if(arr[i] < arr[j]){
+//                  temp[k] = arr[i];
+//                  i++;
+//                  k++;
+//              }
+             
+//              else{
+//                  temp[k] = arr[j];
+//                  j++;
+//                  k++;
+//              }
+//          }
+         
+//          while(i <= mid){
+//              temp[k] = arr[i];
+//              i++;
+//              k++;
+//          } 
+         
+//          while(j <= h){
+//              temp[k] = arr[j];
+//              j++;
+//              k++;
+//          }
+         
+//          for(int i= l; i<=h; i++){
+//              arr[i] = temp[i - l];
+//          }
+         
+//     }
+//     public:
+//     void mergeSort(int arr[], int l, int r)
+//     {
+//         if(l < r){
+//             int mid = (l+r)/2;
+            
+//             mergeSort(arr, l,  mid);
+//             mergeSort(arr, mid+1, r);
+            
+//             merge(arr, l, mid, r);
+//         }
+//     }
+// };
+
+// Iterative Code
 class Solution
 {
     public:
@@ -42,13 +100,21 @@ class Solution
     public:
     void mergeSort(int arr[], int l, int r)
     {
-        if(l < r){
-            int mid = (l+r)/2;
-            
-            mergeSort(arr, l,  mid);
-            mergeSort(arr, mid+1, r);
-            
-            merge(arr, l, mid, r);
-        }
+      int n = r+1, p;
+      for(p = 2; p <= n; p *= 2){
+          for(int i = 0; i < n; i += p){
+              int lo = i;
+              int hi = i+p-1;
+              int mid = (hi+lo)/2;
+              
+        //   For the cases like: 14 39 (67 7), here on p=4, bracket elements are not used and remain unsorted.
+        //   In last we can't even merge them because they are unsorted.
+              if(mid >= n)continue;   /*If in bracket only 1 element remaining, then mid value will cause error So avoid such case.*/
+              if(hi >= n)hi = n-1;    /*This is done to merge remaining bracket elements*/
+              
+              merge(arr, lo, mid, hi);
+          }
+      }
+      if(p/2 < n)merge(arr, 0, (p/2)-1 ,r);  /* If single element remain left in bracket*/
     }
 };
