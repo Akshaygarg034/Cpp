@@ -1,0 +1,78 @@
+// Recursive code + memoization of DP on stocks.
+
+// If we buy a stock, then we cannot buy a stock until previously buyed stock has been selled.
+// So we need to store the state buy to know whether we have buy or not.
+
+// class Solution {
+// public:
+//     int dp[50001][2];
+//     int solve(vector<int>& prices, int fee, int idx, int buy){
+//         // Base Case
+//         if(idx == prices.size()) return 0;
+
+//         if(dp[idx][buy] != -1) return dp[idx][buy];
+
+//         int profit = 0;
+
+//         // Buying
+//         if(buy == 1){
+//             // We have two options: buy at this idx or not. We are taking maximum profit among these.
+//             profit  = max(-prices[idx] - fee + solve(prices, fee, idx+1, 0) , solve(prices, fee, idx+1, 1));
+//         }
+
+//         // Selling
+//         else if(buy == 0){
+//             // We have two options: sell at this idx or not. We are taking maximum profit among these.
+//             profit = max(prices[idx] + solve(prices, fee, idx+1, 1) , solve(prices, fee, idx+1, 0));
+//         }
+
+//         return dp[idx][buy] = profit;
+//     }
+
+//     int maxProfit(vector<int>& prices, int fee) {
+//         memset(dp, -1, sizeof(dp));
+//         return solve(prices, fee, 0, 1);
+//     }
+// };
+
+
+// Top Down Approach
+
+// We don't need to carry a full dp matrix, we can do all the stuff using only 4 varables.
+// Initially we are storing profits of nth element which are 0.
+// After that from n-1 element to 1st, we are storing profits using values of next elements.
+// In last we return 1st element's value corresponding to buy = 1.
+
+class Solution {
+public:
+    int ahead_0, ahead_1;
+    int curr_0, curr_1;
+
+    int maxProfit(vector<int>& prices, int fee) {
+        int n = prices.size();
+
+        // Base Case or initialization
+        ahead_0 = 0;
+        ahead_1 = 0;
+
+        int profit = 0;
+
+        // Filling rest table
+        for(int idx = n-1; idx >= 0; idx--){
+            for(int buy = 1; buy >=0; buy--){
+                if(buy == 1){
+                    curr_1  = max(-prices[idx] - fee + ahead_0 , ahead_1);
+                }
+
+                else if(buy == 0){
+                    curr_0 = max(prices[idx] + ahead_1 , ahead_0);
+                }
+            }
+            
+            ahead_0 = curr_0;
+            ahead_1 = curr_1;
+        }
+
+        return curr_1;
+    }
+};
