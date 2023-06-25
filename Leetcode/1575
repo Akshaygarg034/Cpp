@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int mod = 1e9 + 7;
+    int dp[101][201];
+    int solve(vector<int>& locations, int start, int finish, int fuel){
+        // Base Condition
+        if(fuel < 0) return 0;
+
+        if(dp[start][fuel] != -1) return dp[start][fuel];
+
+        int ans = 0;
+        if(start == finish) ans++;
+
+        for(int i=0; i<locations.size(); i++){
+            if(i == start || abs(locations[i] - locations[start]) > fuel) continue;
+            ans += solve(locations, i, finish, fuel - abs(locations[i] - locations[start]));
+            ans %= mod;
+        }
+
+        return dp[start][fuel] = ans % mod;
+    }
+
+    int countRoutes(vector<int>& locations, int start, int finish, int fuel) {
+        memset(dp, -1, sizeof(dp));
+        return solve(locations, start, finish, fuel);
+    }
+};
