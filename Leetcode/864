@@ -1,0 +1,89 @@
+// Do normal BFS to get shortest path.
+// But for some cases, we may need that after getting a key, we have to go back from where we came, to reach lock.
+// So a normal visited array of i and j is not sufficient.
+// So we take a visited array storing i, j, and keys
+// if keys status is updated, only then, we are allowed to go back.
+// We store key status in the form of bits.               0 0 1 0
+// whenever any key came (c) we make that bit 1           a b c d
+
+class Solution {
+public:
+    int dir[4][2] = {{0, 1}, {0, -1}, {1,0}, {-1, 0}};
+
+    bool isValid(int i, int j, int m, int n){
+        if(i >= m || j >= n || i < 0 || j < 0){
+            return false;
+        }
+        return true;
+    }
+
+    int shortestPathAllKeys(vector<string>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+
+        unordered_set<string> vis;
+
+        int cnt = 0;
+        int steps = 0;
+
+        int si = 0, sj = 0;
+
+        // Make a traversal to get starting points and no. of keys
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(grid[i][j] >= 'a' && grid[i][j] <= 'z') cnt++;
+                if(grid[i][j] == '@'){
+                    si = i;
+                    sj = j;
+                }
+            }
+        }
+
+        queue<vector<int>> q;
+        q.push({si, sj, 0});
+        vis.insert(to_string(si) + " " + to_string(sj) + " " + to_string(0));
+
+        while(!q.empty()){
+            int sz = q.size();
+
+            while(sz--){
+                vector<int> curr = q.front();
+                q.pop();
+
+                // when key status become all 1's  i.e 111111
+                if(curr[2] == (1 << cnt)-1){
+                    return steps;
+                }
+
+                for(int k = 0; k < 4; k++){
+                    int i1 = curr[0] + dir[k][0];
+                    int j1 = curr[1] + dir[k][1];
+                    int keys = curr[2];
+
+
+                    if(isValid(i1, j1, m, n) && grid[i1][j1] != '#'){
+                        // when any key found update in the key status
+                        if(grid[i1][j1] >= 'a' && grid[i1][j1] <= 'f'){
+                            keys |= 1 << (grid[i1][j1] - 'a');
+                        }
+                        
+                        // when lock found but key is not present
+                        if(grid[i1][j1] >= 'A' && grid[i1][j1] <= 'F' && ((1 << (grid[i1][j1] - 'A')) & keys) == 0){
+                            continue;
+                        }
+
+                        // marking visited and pushing in queue
+                        if(!vis.count(to_string(i1) + " " + to_string(j1) + " " + to_string(keys))){
+                            vis.insert(to_string(i1) + " " + to_string(j1) + " " + to_string(keys));
+                            q.push({i1, j1, keys});
+                        }
+                    }
+                }
+            }
+
+            steps++;
+        }
+
+        return -1;
+    }
+};
