@@ -1,0 +1,29 @@
+// Bit Manipulation Method
+
+// If we get sum each bit of all numbers and then sum %= 3,
+// We will get required number's bit in the end.
+
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int ans = 0;
+
+        // Iterating over each bit
+        for(int i = 0; i < 32; i++){
+            int sum = 0;
+
+            // Iterating over each number to get sum of that bit
+            for(int j = 0; j < nums.size(); j++){
+                sum += (nums[j] >> i) & 1;
+            }
+
+            sum %= 3;
+
+            if(sum != 0){
+                ans |= sum << i;
+            }
+        }
+
+        return ans;
+    }
+};
