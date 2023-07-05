@@ -1,0 +1,27 @@
+class Solution {
+public:
+    void solve(vector<int>& cookies, int k, vector<int> &t, int &ans, int start){
+        if(start == cookies.size()){
+            int maxi = INT_MIN;
+            for(auto it: t){
+                maxi = max(maxi, it);
+            }
+            ans = min(ans, maxi);
+            return;
+        }
+
+        for(int i=0; i<k; i++){
+            t[i] += cookies[start];
+            solve(cookies, k, t, ans, start+1);
+            // Backtracking
+            t[i] -= cookies[start];
+        }
+    }
+
+    int distributeCookies(vector<int>& cookies, int k) {
+        vector<int> t(k, 0);
+        int ans = INT_MAX;
+        solve(cookies, k, t, ans, 0);
+        return ans;
+    }
+};
