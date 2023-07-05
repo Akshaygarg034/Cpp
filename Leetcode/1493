@@ -1,0 +1,30 @@
+// Using Sliding window
+
+// Maintain a sliding window where there is at most one zero on it.
+class Solution {
+public:
+    int longestSubarray(vector<int>& nums) {
+        int i=0, j=0;
+        int n = nums.size();
+        bool is_0 = false;
+        int maxi = INT_MIN;
+        
+        while(j < n){
+            if(nums[j] == 0){
+                if(is_0 == false){
+                    is_0 = true;
+                }
+
+                else{
+                    while(nums[i] != 0) i++;
+                    i++;
+                }
+            }
+
+            maxi = max(maxi, j-i);
+            j++;
+        }
+
+        return maxi;
+    }
+};
