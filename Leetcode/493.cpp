@@ -1,54 +1,49 @@
-#include<iostream>
-#include <bits/stdc++.h>
-using namespace std;
-
 class Solution {
 public:
-    int merge(vector<int> &nums, int low, int mid, int high){
-        int total=0;
-        int j = mid+1;
-        for(int i=low; i<=mid; i++){
-            while(j <= high && nums[i] > 2LL * nums[j]){
-                j++;
-            }
-            total += (j-(mid+1));
+    int merge(vector<int>& nums, int l, int mid, int h){
+        int ans = 0;
+        int i = l, j = mid+1;
+
+        // Before merging we are counting pairs
+        for(i; i<=mid; i++){
+            while(j <= h && nums[i] > 2LL * nums[j]) j++;
+            ans += j - (mid+1);
         }
+
         vector<int> temp;
-        int left = low, right = mid+1;
-        while(left <= mid && right <= high){
-            if(nums[left] < nums[right])
-                temp.push_back(nums[left++]);
-            else
-                temp.push_back(nums[right++]);
+        i = l; j = mid+1;
+               
+        while(i <= mid && j <= h){
+            if(nums[i] < nums[j]){
+                temp.push_back(nums[i++]);
+            }
+
+            else{
+                temp.push_back(nums[j++]);
+            }
         }
-        while(left <= mid)
-            temp.push_back(nums[left++]);
-        
-        while(right <= high)
-            temp.push_back(nums[right++]);
-        
-        for(int i=low; i<=high; i++){
-            nums[i] = temp[i - low];
+
+        while(i <= mid) temp.push_back(nums[i++]);
+        while(j <= h) temp.push_back(nums[j++]);
+
+        for(int k=l; k<=h; k++){
+            nums[k] = temp[k - l];
         }
-        return total;
+        return ans;
     }
-    
-    int mergesort(vector<int> &nums, int low, int high){
-        if(low >= high)
-            return 0;
-        int mid = (low + high)/2;
-        int val = mergesort(nums, low, mid);
-        val += mergesort(nums, mid+1, high);
-        val += merge(nums, low, mid, high);
-        return val;
+
+    int mergeSort(vector<int>& nums, int l, int h){
+        int ans = 0;
+        if(l < h){
+            int mid = (l + h)/2;
+            ans += mergeSort(nums, l, mid);
+            ans += mergeSort(nums, mid+1, h);
+            ans += merge(nums, l, mid, h);
+        }
+        return ans;
     }
-    
+
     int reversePairs(vector<int>& nums) {
-        return mergesort(nums, 0, nums.size()-1);
+        return mergeSort(nums, 0, nums.size()-1);
     }
 };
-
-int main(){
-    
-    return 0;
-}
