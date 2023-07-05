@@ -7,7 +7,7 @@ public:
         // Before merging we are counting pairs
         for(i; i<=mid; i++){
             while(j <= h && nums[i] > 2LL * nums[j]) j++;
-            ans += j - (mid+1);
+            ans += j - (mid+1); 
         }
 
         vector<int> temp;
