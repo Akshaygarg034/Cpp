@@ -1,40 +1,28 @@
-#include <iostream>
-#include <bits/stdc++.h>
-using namespace std;
-
-
-class Solution
-{
-
+// Using set (O(n + 2n)) Approach
+class Solution {
 public:
-    int longestConsecutive(vector<int> &nums)
-    {
-        set<int> st;
-        int streak = 0;
-        int n = nums.size();
-        for (int it : nums)
-        {
+    int longestConsecutive(vector<int>& nums) {
+        unordered_set<int> st;
+
+        // Putting all elements in set in order to avoid duplicate elements
+        for(auto it : nums){
             st.insert(it);
         }
-        for (int it : nums)
-        {
-            if (!st.count(it - 1))
-            {
-                int current_streak = 1;
-                int current_elem = it;
-                while (st.count(current_elem + 1))
-                {
-                    current_elem++;
-                    current_streak++;
+
+        int maxi = 0;
+        for(auto it: nums){
+            // Finding starting element of the sequence
+            if(st.find(it-1) == st.end()){
+                int cnt = 1;
+                int x = it;
+                while(st.find(x+1) != st.end()){
+                    cnt++;
+                    x++;
                 }
-                streak = max(current_streak, streak);
+                maxi = max(maxi, cnt);
             }
         }
-        return streak;
+
+        return maxi;
     }
 };
-
-int main()
-{
-    return 0;
-}
