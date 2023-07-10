@@ -1,0 +1,24 @@
+// Using Recursion method, firstly sort array and finding every subset starting with idx 0, then 1, then 2 ---
+// Also ensuring idx is not same as previous element
+
+class Solution {
+public:
+    void solve(vector<int>& nums, vector<vector<int>> &ans, vector<int> &temp, int idx){
+        for(int i=idx; i<nums.size(); i++){
+            if(i > idx && nums[i] == nums[i-1]) continue;
+
+            temp.push_back(nums[i]);
+            solve(nums, ans, temp, i+1);
+            temp.pop_back();
+        }
+        ans.push_back(temp);
+
+    }
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<vector<int>> ans;
+        vector<int> temp;
+        solve(nums, ans, temp, 0); 
+        return ans;
+    }
+};
