@@ -1,22 +1,52 @@
-class Solution {
-public:
-    void solve(vector<int> &nums, vector<vector<int>> &ans, int idx, vector<int> &temp){
-        if(idx == nums.size()){
-            ans.push_back(temp);
-            return;
-        }
-        // If we choosing that idx
-        temp.push_back(nums[idx]);
-        solve(nums, ans, idx+1, temp);
+// Method 1 (Make a recursion tree based upon, whether to put element in subset or not)
 
-        // If we are not choosing that idx
-        temp.pop_back();
-        solve(nums, ans, idx+1, temp);
+// class Solution {
+// public:
+//     void solve(vector<int> &nums, vector<vector<int>> &ans, int idx, vector<int> &temp){
+//         if(idx == nums.size()){
+//             ans.push_back(temp);
+//             return;
+//         }
+//         // choosing element
+//         temp.push_back(nums[idx]);
+//         solve(nums, ans, idx+1, temp);
+
+//         // not choosing element
+//         temp.pop_back();
+//         solve(nums, ans, idx+1, temp);
+//     }
+//     vector<vector<int>> subsets(vector<int>& nums) {
+//         vector<vector<int>> ans;
+//         vector<int> temp;
+//         solve(nums, ans, 0, temp);
+//         return ans;
+//     }
+// };
+
+
+// Method 2
+
+// Recursion based upon;
+// Finding all subsets starting with idx 1
+// after that find for idx 2
+// ans so on.
+
+class Solution {
+private:
+    void solve(vector<vector<int>> &ans, vector<int> &nums, vector<int> &curr, int index) {
+    for(int i = index; i < nums.size(); i++) {
+        curr.push_back(nums[i]);
+        solve(ans, nums, curr, i+1);
+        curr.pop_back();
     }
+    ans.push_back(curr);
+}
+public:
     vector<vector<int>> subsets(vector<int>& nums) {
         vector<vector<int>> ans;
-        vector<int> temp;
-        solve(nums, ans, 0, temp);
+        vector<int> curr;
+        solve(ans, nums, curr, 0);
+        
         return ans;
     }
 };
