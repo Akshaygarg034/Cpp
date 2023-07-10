@@ -1,0 +1,25 @@
+// For every index, there are two options, whether to choose that idx or not
+// Depending upon these two possibilities, we make entire recursive tree to get all subsets
+class Solution
+{
+public:
+    void solve(vector<int> &arr, int n, vector<int> &ans, int idx, int sum){
+        if(idx == n){
+            ans.push_back(sum);
+            return;
+        }
+        
+        // Using that idx as a part of sum
+        solve(arr, n, ans, idx+1, sum + arr[idx]);
+        
+        // Not using that idx
+        solve(arr, n, ans, idx+1, sum);
+        
+    }
+    vector<int> subsetSums(vector<int> arr, int N)
+    {
+        vector<int> ans;
+        solve(arr, N, ans, 0, 0);
+        return ans;
+    }
+};
