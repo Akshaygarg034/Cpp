@@ -1,0 +1,32 @@
+class Solution {
+  public:
+    void solve(int idx, vector<int>& arr, int target, vector<vector<int>> &ans, vector<int> &temp){
+        if(target == 0){
+            ans.push_back(temp);
+            return;
+        }
+
+        if(idx == arr.size()) return;
+
+        // Pick
+        if(arr[idx] <= target){
+            temp.push_back(arr[idx]);
+            solve(idx, arr, target - arr[idx], ans, temp);
+            temp.pop_back();
+        }
+
+        // Not Pick
+        solve(idx + 1, arr, target, ans, temp);
+    }
+    
+    vector<vector<int> > combinationSum(vector<int> &A, int B) {
+        // We are getting duplicate results due to duplicate elements of array
+        set<int> s(A.begin(), A.end());
+        A.assign(s.begin(), s.end());
+        
+        vector<vector<int>> ans;
+        vector<int> temp;
+        solve(0, A, B, ans, temp);
+        return ans;  
+    }
+};
