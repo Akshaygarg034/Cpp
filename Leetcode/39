@@ -1,0 +1,29 @@
+// Recursion method based upon pick or not pick element
+
+class Solution {
+public:
+    void solve(int idx, vector<int>& arr, int target, vector<vector<int>> &ans, vector<int> &temp){
+        if(target == 0){
+            ans.push_back(temp);
+            return;
+        }
+
+        if(idx == arr.size()) return;
+
+        // Pick
+        if(arr[idx] <= target){
+            temp.push_back(arr[idx]);
+            solve(idx, arr, target - arr[idx], ans, temp);
+            temp.pop_back();
+        }
+
+        // Not Pick
+        solve(idx + 1, arr, target, ans, temp);
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;
+        vector<int> temp;
+        solve(0, candidates, target, ans, temp);
+        return ans;       
+    }
+};
