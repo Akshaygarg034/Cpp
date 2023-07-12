@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        int m = haystack.size();
+        int n = needle.size();
+        if(m < n) return -1;
+
+        int i = 0;
+        for(int j=0; j< m ; j++){
+            if(haystack[j] == needle[i]){
+                i++;
+            }
+            
+            else{
+                j = j-i;
+                i = 0;
+            }
+
+            if(i == n){
+                return j - n + 1;
+            }
+        }
+        return -1;
+    }
+};
