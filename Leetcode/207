@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> g[numCourses];
+        vector<int> in(numCourses, 0);
+
+        for(auto it: prerequisites){
+            g[it[1]].push_back(it[0]);
+            in[it[0]]++;
+        }
+
+        queue<int> q;
+        vector<int> ans;
+
+        for(int i=0; i<in.size(); i++){
+            if(in[i] == 0) q.push(i);
+        }
+
+        while(!q.empty()){
+            int t = q.front();
+            q.pop();
+            ans.push_back(t);
+
+            for(auto it: g[t]){
+                in[it]--;
+                if(in[it] == 0) q.push(it);
+            }
+        }
+
+        if(ans.size() == numCourses) return true;
+        return false;
+    }
+};
