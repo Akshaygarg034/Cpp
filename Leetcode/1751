@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int solve(vector<vector<int>>& events, int k, int idx, vector<vector<int>> &t){
+        if(k == 0 || idx >= events.size()){
+            return 0;
+        }
+
+        if(t[idx][k] != -1) return t[idx][k];
+
+        int i = idx+1;
+
+        for(i; i<events.size(); i++){
+            if(events[i][0] > events[idx][1]){
+                break;
+            }
+        }
+
+        // Choose
+        int c = events[idx][2] + solve(events, k-1, i, t);
+
+        // Not Choose
+        int nc = solve(events, k, idx+1, t);
+
+        return t[idx][k] = max(c, nc);
+    }
+
+    int maxValue(vector<vector<int>>& events, int k) {
+        vector<vector<int>> t(events.size()+1, vector<int>(k+1, -1));
+
+        sort(events.begin(), events.end());
+        return solve(events, k, 0, t);
+    }
+};
