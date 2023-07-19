@@ -1,0 +1,44 @@
+// Method 1: O(nlogn) Approach
+
+// class Solution {
+// public:
+//     vector<int> countBits(int n) {
+//         vector<int> ans;
+//         ans.push_back(0);
+
+//         for(int i=1; i<=n; i++){
+//             int cnt = 0;
+//             int num = i;
+
+//             while(num > 0){
+//                 if(num&1) cnt++;
+
+//                 num = num >> 1;
+//             }
+//             ans.push_back(cnt);
+//         }
+
+//         return ans;
+//     }
+// };
+
+
+// Method 2: O(n) Approach
+
+class Solution {
+public:
+    vector<int> countBits(int n) {
+        vector<int> ans(n + 1);
+        ans[0] = 0;
+
+        for(int i=1; i<=n; i++){
+            // If n = even, then no. of 1's in n will be equal to no. of 1's in n/2
+            if(i % 2 == 0) ans[i] = ans[i/2];
+
+            // If n = odd, then no. of 1's in n will be equal to no. of 1's in n/2 + 1
+            else ans[i] = ans[i/2] + 1;
+        }
+        
+        return ans;
+    }
+};
