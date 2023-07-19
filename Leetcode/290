@@ -1,0 +1,35 @@
+class Solution {
+public:
+    bool wordPattern(string pattern, string s) {
+        int i = 0, j = 0;
+        unordered_map<char, string> mp1;
+        unordered_map<string, char> mp2;
+
+        for(i; i < pattern.size(); i++){
+            string temp;
+
+            // Storing word in temp
+            while(j < s.size() && s[j] != ' '){
+                temp += s[j];
+                j++;
+            }
+            
+            // If j >= s.size() but pattern still remaining, in such case, we will get empty temp
+            if(temp == "") return false;
+
+            // Finding in mp1 for pattern and comparing with previous value || finding in mp2 for word and comparing with previous value
+            if((mp1.find(pattern[i]) != mp1.end() && mp1[pattern[i]] != temp) || (mp2.find(temp) != mp2.end() && mp2[temp] != pattern[i])) return false;
+
+            // Storing corresponding values in maps
+            mp1[pattern[i]] = temp;
+            mp2[temp] = pattern[i];
+
+            j++;
+        }
+        
+        // if s size is greater than pattern size
+        if(j < s.size()) return false;
+        
+        return true;
+    }
+};
