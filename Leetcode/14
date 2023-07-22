@@ -1,0 +1,23 @@
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& arr) {
+        // Initially set 1st string as answer and its length as longest match
+        string ans = arr[0];
+        int match = arr[0].size();
+
+        for(int i=1; i<arr.size(); i++){
+            int j = 0;
+
+            // Check for all strings that how many characters are matching
+            while(j < arr[0].size() && arr[i][j] == arr[0][j]) j++;
+            
+            if(j < match){
+                // Always taking minimum as longest match
+                match = min(match, j);
+                ans = arr[0].substr(0, j);
+            }
+        }
+
+        return ans;
+    }
+};
