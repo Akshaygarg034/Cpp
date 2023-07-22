@@ -1,0 +1,31 @@
+// Let two strings a = "abc", b = "c abc abc abc a"
+// Firstly make size equal, so a becomes "abc abc abc abc"
+// Here we can see that after making sizes equal, either two strings got completely matched, or we can need only one extra concatenation of a
+
+class Solution {
+public:
+    int repeatedStringMatch(string a, string b) {
+        int cnt = 1;
+
+        string temp = a;
+
+        // Making sizes equal
+        while(temp.size() < b.size()){
+            temp = temp + a;
+            cnt++;
+        }
+
+        // If b is substring
+        if(temp.find(b) != string::npos) return cnt;
+
+        // Doing one more concatenation
+        temp = temp + a;
+        cnt++;
+
+        // Again checking b is substring or not
+        if(temp.find(b) != string::npos) return cnt;
+
+        // If still b is not substring then after any more concatenations, b cannot be substring of a
+        return -1;
+    }
+};
