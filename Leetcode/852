@@ -1,0 +1,23 @@
+// Doing Binary search to find that index
+
+class Solution {
+public:
+    int peakIndexInMountainArray(vector<int>& arr) {
+        int ans = -1;
+
+        int l = 0, h = arr.size()-1;
+
+        while(l <= h){
+            int mid = l + (h-l)/2;
+            if(arr[mid] > arr[mid+1]){
+                ans = mid;
+                h = mid - 1;
+            }
+            else{
+                l = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+};
