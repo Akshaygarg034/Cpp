@@ -1,0 +1,29 @@
+// Doing binary search to find, minimum speed at which total time will be less than hour
+
+class Solution {
+public:
+    int minSpeedOnTime(vector<int>& dist, double hour) {
+        int n = dist.size();
+        int ans = -1;
+        int l = 1, h = 1e7;
+
+        while(l <= h){
+            int mid = l + (h-l)/2;
+            double total_time = 0;
+            for(int i = 0; i < n-1; i++){
+                total_time += ceil((double)dist[i]/mid);
+            }
+            total_time += (double)dist[n-1]/mid;
+
+            if(total_time <= hour){
+                ans = mid;
+                h = mid - 1;
+            }
+            else{
+                l = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+};
