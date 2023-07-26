@@ -1,25 +1,101 @@
+// Using Brute Force, O(m * n)
+
+// class Solution {
+// public:
+//     int strStr(string haystack, string needle) {
+//         int m = haystack.size();
+//         int n = needle.size();
+//         if(m < n) return -1;
+
+//         int i = 0;
+//         for(int j=0; j< m ; j++){
+//             if(haystack[j] == needle[i]){
+//                 i++;
+//             }
+            
+//             else{
+//                 j = j-i;
+//                 i = 0;
+//             }
+
+//             if(i == n){
+//                 return j - n + 1;
+//             }
+//         }
+//         return -1;
+//     }
+// };
+
+// Using KMP Algorithm, O(m + n)
+
+// To understand more about kmp, youtube link:
+// https://www.youtube.com/watch?v=GTJr8OvyEVQ
+
 class Solution {
 public:
+    vector<int> makeTable(string &s){
+        int n = s.size();
+
+        vector<int> kmp(n, -1);
+        kmp[0] = 0;
+
+        int l = 0, h = 1;
+
+        while(h < n){
+            if(s[h] == s[l]){
+                kmp[h] = l + 1;
+                l++;
+                h++;
+            }
+
+            else if(l > 0){
+                l = kmp[l-1];
+            }
+            
+            // l == 0
+            else{
+                kmp[h] = 0;
+                h++;
+            }
+        }
+
+        return kmp;
+    }
+
     int strStr(string haystack, string needle) {
         int m = haystack.size();
         int n = needle.size();
-        if(m < n) return -1;
 
-        int i = 0;
-        for(int j=0; j< m ; j++){
-            if(haystack[j] == needle[i]){
-                i++;
-            }
-            
-            else{
-                j = j-i;
-                i = 0;
+        if(needle.size() == 0) return 0;
+
+        // Making kmp table
+        vector<int> kmp = makeTable(needle);
+
+        int i = 0, j = 0;
+
+        while(i < m){
+            if(haystack[i] == needle[j]){
+                i++; j++;
             }
 
-            if(i == n){
-                return j - n + 1;
+            if(j == n){
+                return (i - j);
             }
+
+            if(i < m && haystack[i] != needle[j]){
+                if(j > 0){
+                    j = kmp[j - 1];
+                }
+
+                else{
+                    i++;
+                }
+                
+            }  
         }
+
         return -1;
     }
 };
+
+
