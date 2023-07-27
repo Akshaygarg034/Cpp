@@ -1,0 +1,38 @@
+// Binary search on each time to find maximum time in which it is possible to run all computers simultaneously
+
+class Solution {
+public:
+    bool isPossible(long long time, int n, vector<int>& batteries){
+        long long total_time = 0;
+
+        for(auto it: batteries){
+            // if it is exceeding time, than it should be made equal to time
+            
+            if(it < time) total_time += it;
+            else total_time += time;
+        }
+
+        if(total_time / n >= time) return true;
+        return false;
+    }
+
+    long long maxRunTime(int n, vector<int>& batteries) {
+        long long ans = 0;
+        long long l = 1;
+        long long h = 1e14;
+
+        while(l <= h){
+            long long mid = l + (h-l)/2;
+
+            if(isPossible(mid, n, batteries)){
+                ans = mid;
+                l = mid + 1;
+            }
+
+            else{
+                h = mid - 1;
+            }
+        }
+        return ans;
+    }
+};
