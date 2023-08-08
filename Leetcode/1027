@@ -3,7 +3,7 @@
 // for each i, we move j from i+1 to n, then we store each differences and length of subsequence in map[j].
 // At particular j, if difference is already there in corresponding i, we store length + 1 in map[j] and update maxi.
 // In last we will return maxi.
-
+ 
 class Solution {
 public:
     int longestArithSeqLength(vector<int>& nums) {
