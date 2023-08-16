@@ -2,7 +2,7 @@ class Solution {
 public:
 
 vector<int>res;
-
+     
 void helper(int i,vector<int>&people_skill,int m,int mask,vector<int>&ans,vector<vector<int>>&dp)
 {
   if(i == people_skill.size()) //Base Case
