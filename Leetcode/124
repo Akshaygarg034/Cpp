@@ -19,7 +19,7 @@ public:
     int solve(TreeNode* root){
         if(!root) return 0;
 
-        int l = solve(root->left);
+        int l = solve(root->left); 
         int r = solve(root->right);
 
         // For returning
