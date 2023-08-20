@@ -8,7 +8,7 @@ using namespace std;
 // From that graph we can find topological sort and that will be the ans.
 
 class Solution
-{
+{ 
 public:
     void dfs(int i, vector<int> adj[], vector<int> &vis, string &ans) 
     {
