@@ -6,7 +6,7 @@ public:
 
         // Putting all elements in set in order to avoid duplicate elements
         for(auto it : nums){
-            st.insert(it);
+            st.insert(it); 
         }
 
         int maxi = 0;
