@@ -8,7 +8,7 @@ public:
         vis[elem] = 1;
         for(auto it: g[elem]){
             if(!vis[it]){
-                dfs(g, it, vis);
+                dfs(g, it, vis); 
             }
         }
     }
