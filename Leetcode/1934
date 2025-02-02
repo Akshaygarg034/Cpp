@@ -1,0 +1,17 @@
+-- First way
+-- select s.user_id , round(sum(case when c.action = 'confirmed' then 1 else 0 end)/count(*), 2) as confirmation_rate
+-- from Signups s left join Confirmations c
+-- on s.user_id = c.user_id
+-- group by s.user_id
+
+-- Second way
+select s.user_id , round(sum(if(c.action = 'confirmed', 1, 0))/count(*), 2) as confirmation_rate
+from Signups s left join Confirmations c
+on s.user_id = c.user_id
+group by s.user_id
+
+
+# Note:
+# I can also use like sum(c.action = 'confirmed') directly. but in this way, if c.action = null, then sum will also return null. Then I need to handle that null values seperately.
+
+# count(*) returns 1 even if row contains null value, but count(c.action) returns 0 if its value is null for that row.
