@@ -1,0 +1,26 @@
+# Method 1
+-- select 
+-- case 
+-- when id != max_id and id % 2 != 0
+-- then id + 1
+-- when id % 2 = 0 
+-- then id -1
+-- else id
+-- end
+-- as id , student
+-- from Seat ,
+-- (select max(id) as max_id from Seat) as max_table
+-- order by id asc
+
+# Method 2
+select 
+case 
+when id != (select max(id) as max_id from Seat) and id % 2 != 0
+then id + 1
+when id % 2 = 0 
+then id -1
+else id
+end
+as id , student
+from Seat
+order by id asc
